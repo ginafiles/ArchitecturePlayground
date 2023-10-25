@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -15,6 +14,7 @@ import java.util.Locale
 class MainViewModel : ViewModel() {
 
     private var i = 0
+
     private val noteList: MutableList<Note> = mutableListOf()
 
     private val _notes = MutableLiveData<List<Note>>()
@@ -23,9 +23,12 @@ class MainViewModel : ViewModel() {
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> = _loading
 
-    @Deprecated(message = "")
-    fun provideData(): List<Note> {
-        return noteList
+    fun provideData() {
+        viewModelScope.launch(Dispatchers.IO) {
+            _loading.postValue(true)
+            delay(1000)
+            _notes.postValue(noteList)
+        }
     }
 
     fun formateDate(date: Date): String {
@@ -37,20 +40,30 @@ class MainViewModel : ViewModel() {
         i++
 
         noteList.add(note)
-        fetchData()
+        _notes.postValue(noteList)
     }
 
-    fun fetchData() {
-        viewModelScope.launch(Dispatchers.IO) {
-            withContext(Dispatchers.Main) {
-                _loading.value = true
-            }
-            delay(3000)
-            withContext(Dispatchers.Main) {
-                _notes.value = this@MainViewModel.noteList
-                _loading.value = false
-            }
-        }
 
-    }
+    //-- Ini versi sebelum data binding --
+//    fun createNote() {
+//        val note = Note(Date(), "note: $i")
+//        i++
+//
+//        noteList.add(note)
+//        fetchData()
+//    }
+
+//    fun fetchData() {
+//        viewModelScope.launch(Dispatchers.IO) {
+//            withContext(Dispatchers.Main) {
+//                _loading.value = true
+//            }
+//            delay(3000)
+//            withContext(Dispatchers.Main) {
+//                _notes.value = this@MainViewModel.noteList
+//                _loading.value = false
+//            }
+//        }
+//
+//    }
 }
