@@ -1,6 +1,13 @@
 package com.ginamelinia.architectureplayground
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -8,11 +15,17 @@ import java.util.Locale
 class MainViewModel : ViewModel() {
 
     private var i = 0
-    private val notes: MutableList<Note> = mutableListOf()
+    private val noteList: MutableList<Note> = mutableListOf()
+
+    private val _notes = MutableLiveData<List<Note>>()
+    val notes: LiveData<List<Note>> = _notes
+
+    private val _loading = MutableLiveData<Boolean>()
+    val loading: LiveData<Boolean> = _loading
 
     @Deprecated(message = "")
     fun provideData(): List<Note> {
-        return notes
+        return noteList
     }
 
     fun formateDate(date: Date): String {
@@ -23,14 +36,21 @@ class MainViewModel : ViewModel() {
         val note = Note(Date(), "note: $i")
         i++
 
-        notes.add(note)
+        noteList.add(note)
+        fetchData()
     }
 
-    fun fetchData(): List<Note> {
-        return if (this.notes.isEmpty()) {
-            emptyList()
-        } else {
-            this.notes
+    fun fetchData() {
+        viewModelScope.launch(Dispatchers.IO) {
+            withContext(Dispatchers.Main) {
+                _loading.value = true
+            }
+            delay(3000)
+            withContext(Dispatchers.Main) {
+                _notes.value = this@MainViewModel.noteList
+                _loading.value = false
+            }
         }
+
     }
 }
