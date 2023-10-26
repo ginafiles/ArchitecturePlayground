@@ -1,11 +1,11 @@
-package com.ginamelinia.architectureplayground
+package com.ginamelinia.architectureplayground.page
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ginamelinia.architectureplayground.Note
 import com.ginamelinia.architectureplayground.repository.MainRepository
+import com.ginamelinia.architectureplayground.repository.data.Note
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -14,8 +14,7 @@ import java.util.Date
 import java.util.Locale
 
 class MainViewModel(
-    private val local: MainRepository,
-    private val remote: MainRepository
+    private val local: MainRepository
 ) : ViewModel() {
 
     private val _notes = MutableLiveData<List<Note>>()

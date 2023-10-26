@@ -1,6 +1,6 @@
 package com.ginamelinia.architectureplayground.repository
 
-import com.ginamelinia.architectureplayground.Note
+import com.ginamelinia.architectureplayground.repository.data.Note
 
 interface MainRepository {
 

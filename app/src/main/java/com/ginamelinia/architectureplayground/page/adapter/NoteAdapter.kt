@@ -1,8 +1,11 @@
-package com.ginamelinia.architectureplayground
+package com.ginamelinia.architectureplayground.page.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
+import com.ginamelinia.architectureplayground.repository.data.Note
+import com.ginamelinia.architectureplayground.R
+import com.ginamelinia.architectureplayground.page.MainViewModel
 
 class NoteAdapter(private val mainViewModel: MainViewModel) : ListAdapter<Note, NoteViewHolder>(
     NoteDiffutil()

@@ -7,25 +7,38 @@
     <data>
         <variable
             name="adapter"
-            type="com.ginamelinia.architectureplayground.NoteAdapter"/>
+            type="com.ginamelinia.architectureplayground.page.adapter.NoteAdapter"/>
         <variable
             name="viewModel"
-            type="com.ginamelinia.architectureplayground.MainViewModel" />
+            type="com.ginamelinia.architectureplayground.page.MainViewModel" />
         <variable
             name="layoutManager"
             type="androidx.recyclerview.widget.RecyclerView.LayoutManager" />
+        <variable
+            name="view"
+            type="android.view.View" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MainActivity">
+        tools:context=".page.MainActivity">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{viewModel.loading ? view.VISIBLE : view.GONE}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:listitem="@layout/item_note"
+            android:visibility="@{viewModel.loading ? view.GONE : view.VISIBLE}"
             app:setAdapter="@{adapter}"
             app:submitList="@{viewModel.notes}"
             app:setLayoutManager="@{layoutManager}"

@@ -1,8 +1,11 @@
-package com.ginamelinia.architectureplayground
+package com.ginamelinia.architectureplayground.page.adapter
 
 import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.ginamelinia.architectureplayground.repository.data.Note
+import com.ginamelinia.architectureplayground.R
+import com.ginamelinia.architectureplayground.page.MainViewModel
 
 class NoteViewHolder(
     itemView: View,

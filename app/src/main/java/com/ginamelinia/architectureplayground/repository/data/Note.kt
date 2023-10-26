@@ -1,4 +1,4 @@
-package com.ginamelinia.architectureplayground
+package com.ginamelinia.architectureplayground.repository.data
 
 import java.util.Date
 
