@@ -7,4 +7,6 @@ interface MainRepository {
     fun provideNotes(): List<Note>
 
     fun addNote(): List<Note>
+
+    fun clearToken()
 }

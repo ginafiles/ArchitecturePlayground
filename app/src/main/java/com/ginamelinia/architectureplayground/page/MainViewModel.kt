@@ -9,6 +9,7 @@ import com.ginamelinia.architectureplayground.repository.data.Note
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -23,6 +24,9 @@ class MainViewModel(
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> = _loading
 
+    private val _logout = MutableLiveData<Boolean>()
+    val logout: LiveData<Boolean> = _logout
+
     fun provideData() {
         viewModelScope.launch(Dispatchers.IO) {
             _loading.postValue(true)
@@ -36,7 +40,20 @@ class MainViewModel(
     }
 
     fun createNote() {
-
         _notes.postValue(local.addNote())
+    }
+
+    fun logout() {
+        viewModelScope.launch(Dispatchers.IO) {
+            withContext(Dispatchers.Main) {
+                _loading.value = true
+            }
+            delay(3000)
+            withContext(Dispatchers.Main) {
+                local.clearToken()
+                _loading.value = false
+                _logout.value = true
+            }
+        }
     }
 }

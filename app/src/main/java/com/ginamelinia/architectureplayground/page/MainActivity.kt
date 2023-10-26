@@ -1,6 +1,7 @@
 package com.ginamelinia.architectureplayground.page
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.BindingAdapter
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.ginamelinia.architectureplayground.R
 import com.ginamelinia.architectureplayground.databinding.ActivityMainBinding
 import com.ginamelinia.architectureplayground.page.adapter.NoteAdapter
+import com.ginamelinia.architectureplayground.page.auth.login.LoginActivity
 import com.ginamelinia.architectureplayground.repository.data.Note
 import com.ginamelinia.architectureplayground.repository.local.LocalRepository
 
@@ -42,6 +44,13 @@ class MainActivity : AppCompatActivity() {
         binding?.view = binding?.root
         binding?.adapter = NoteAdapter(mainViewModel)
         binding?.layoutManager = LinearLayoutManager(this)
+
+        mainViewModel?.logout?.observe(this) { isLoggedOut ->
+            if (isLoggedOut) {
+                startActivity(Intent(this, LoginActivity::class.java))
+                this.finish()
+            }
+        }
     }
 }
 

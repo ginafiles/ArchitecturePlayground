@@ -31,6 +31,10 @@ class LocalRepository(
         return provideNotes()
     }
 
+    override fun clearToken() {
+        sharedPreferences.edit().remove(KEY_TOKEN).apply()
+    }
+
     override fun validateInput(username: String, password: String): Boolean {
         return username.isNotEmpty()
                 && username.isNotBlank()
