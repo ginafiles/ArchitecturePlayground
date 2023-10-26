@@ -5,11 +5,12 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.ginamelinia.architectureplayground.databinding.ActivityMainBinding
+import com.ginamelinia.architectureplayground.repository.local.MainLocalRepository
+import com.ginamelinia.architectureplayground.repository.remote.MainRemoteRepository
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,7 +21,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        mainViewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        mainViewModel = MainViewModel(local = MainLocalRepository(), remote = MainRemoteRepository())
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         binding?.lifecycleOwner = this
